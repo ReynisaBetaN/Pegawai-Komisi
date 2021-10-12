@@ -1,20 +1,98 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Program 1", "Program 1\Program 1.csproj", "{1BB09BB4-A2DC-43AE-AA64-BADC6EE92BD9}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x86 = Debug|x86
-		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1BB09BB4-A2DC-43AE-AA64-BADC6EE92BD9}.Debug|x86.ActiveCfg = Debug|x86
-		{1BB09BB4-A2DC-43AE-AA64-BADC6EE92BD9}.Debug|x86.Build.0 = Debug|x86
-		{1BB09BB4-A2DC-43AE-AA64-BADC6EE92BD9}.Release|x86.ActiveCfg = Release|x86
-		{1BB09BB4-A2DC-43AE-AA64-BADC6EE92BD9}.Release|x86.Build.0 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-EndGlobal
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Program_1
+{
+    public class PegawaiKomisi : object
+    {
+        public string NamaDepan;
+        public string NamaAkhir;
+        public string NomorKTP;
+        private decimal penjualanKotor;
+        private decimal tingkatKomisi;
+
+        public PegawaiKomisi(string namaDepan, string namaAkhir, string nomorKTP, decimal penjualanKotor, decimal tingkatKomisi)
+        {
+            NamaDepan = namaDepan;
+            NamaAkhir = namaAkhir;
+            NomorKTP = nomorKTP;
+            PenjualanKotor = penjualanKotor;
+            TingkatKomisi = tingkatKomisi;
+        }
+        public void setNamaDepan(string namaDepan)
+        {
+            NamaDepan = namaDepan;
+        }
+        public string getNamaDepan()
+        {
+            return NamaDepan;
+        }
+        public void setNamaAkhir(string namaAkhir)
+        {
+            NamaAkhir = namaAkhir;
+        }
+        public string getNamaAkhir()
+        {
+            return NamaAkhir;
+        }
+        public void setNomorKTP(string nomorKTP)
+        {
+            NomorKTP = nomorKTP;
+        }
+        public string getNomorKTP()
+        {
+            return NomorKTP;
+        }
+        public decimal PenjualanKotor
+        {
+            get
+            {
+                return penjualanKotor;
+            }
+            set
+            {
+                penjualanKotor = (value < 0) ? 0 : value;
+            }
+        }
+        public decimal TingkatKomisi
+        {
+            get
+            {
+                return tingkatKomisi;
+            }
+            set
+            {
+                tingkatKomisi = (value > 0 && value < 1) ? value : 0;
+            }
+        }
+        public decimal Penghasilan()
+        {
+            return TingkatKomisi * PenjualanKotor;
+        }
+        public override string ToString()
+        {
+            return string.Format("Nama Depan : {0} \nNama Akhir : {1} \nNomor KTP : {2} \nPenjualan Kotor : {3} \nTingkat Komisi : {4}", NamaDepan, NamaAkhir, NomorKTP, penjualanKotor, tingkatKomisi);
+        }
+        static void Main(string[] args)
+        {
+            PegawaiKomisi pegawai = new PegawaiKomisi("Sue", "Jones", "222-22-222", 10000.00M, .06M);
+
+            Console.WriteLine("Informasi pegawai diperoleh dengan properti dan metode : \n");
+            Console.WriteLine("Nama Depan adalah {0}", pegawai.NamaDepan);
+            Console.WriteLine("Nama Akhir adalah {0}", pegawai.NamaAkhir);
+            Console.WriteLine("Nomor KTP adalah {0}", pegawai.NomorKTP);
+            Console.WriteLine("Penjualan Kotor adalah {0:C}", pegawai.PenjualanKotor);
+            Console.WriteLine("Tingkat Komisi adalah {0:F2}", pegawai.TingkatKomisi);
+            Console.WriteLine("Penghasilan adalah {0:C}", pegawai.Penghasilan());
+
+            pegawai.PenjualanKotor = 5000.00M;
+            pegawai.TingkatKomisi = .1M;
+        
+            Console.WriteLine("\n{0}:\n\n{1}", "Informasi pegawai yang terbaru diperoleh dari ToString", pegawai);
+            Console.WriteLine("Penghasilan : {0:C}", pegawai.Penghasilan());
+            Console.ReadLine();
+        }
+    }
+}
