@@ -1,0 +1,121 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Program_2
+{
+    public class PenambahanPegawaiKomisi
+    {
+        public string NamaDepan;
+        public string NamaAkhir;
+        public string NomorKTP;
+        private decimal penjualanKotor;
+        private decimal tingkatKomisi;
+        private decimal gajiPokok;
+
+
+        public PenambahanPegawaiKomisi(string namaDepan, string namaAkhir, string nomorKTP, decimal penjualanKotor, decimal tingkatKomisi, decimal gajiPokok)
+        {
+        
+            NamaDepan = namaDepan;
+            NamaAkhir = namaAkhir;
+            NomorKTP = nomorKTP;
+            PenjualanKotor = penjualanKotor;
+            TingkatKomisi = tingkatKomisi;
+            GajiPokok = gajiPokok;
+        }
+        public void setNamaDepan(string namaDepan)
+        {
+            NamaDepan = namaDepan;
+        }
+        public string getNamaDepan()
+        {
+            return NamaDepan;
+        }
+        public void setNamaAkhir(string namaAkhir)
+        {
+            NamaAkhir = namaAkhir;
+        }
+        public string getNamaAkhir()
+        {
+            return NamaAkhir;
+        }
+        public void setNomorKTP(string nomorKTP)
+        {
+            NomorKTP = nomorKTP;
+        }
+        public string getNomorKTP()
+        {
+            return NomorKTP;
+        }
+
+        public decimal PenjualanKotor
+        {
+            get
+            {
+                return penjualanKotor;
+            }
+            set
+            {
+                penjualanKotor = (value < 0) ? 0 : value;
+            }
+        }
+
+        public decimal TingkatKomisi
+        {
+            get
+            {
+                return tingkatKomisi;
+            }
+            set
+            {
+                tingkatKomisi = (value > 0 && value < 1) ? value : 0; 
+            }
+        }
+
+        public decimal GajiPokok
+        {
+            get
+            {
+                return gajiPokok;
+            }
+            set
+            {
+                gajiPokok = (value < 0) ? 0 : value;
+            }
+        }
+
+        public decimal Penghasilan()
+        {
+            return gajiPokok + (tingkatKomisi * penjualanKotor);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Nama Depan : {0} \nNama Akhir : {1} \nNomor KTP : {2} \nPenjualan Kotor : {3} \nTingkat Komisi : {4} \nGaji Pokok : {5}", NamaDepan, NamaAkhir, NomorKTP, penjualanKotor, tingkatKomisi, gajiPokok);
+        }
+        
+        static void Main(string[] args)
+        {
+           
+            PenambahanPegawaiKomisi pegawai = new PenambahanPegawaiKomisi("Bob", "Lewis", "333-33-333", 5000.00M, .04M, 300.00M);
+            
+            Console.WriteLine("Informasi pegawai diperoleh dengan properti dan metode : \n");
+            Console.WriteLine("Nama Depan adalah {0}", pegawai.NamaDepan);
+            Console.WriteLine("Nama Akhir adalah {0}", pegawai.NamaAkhir);
+            Console.WriteLine("Nomor KTP adalah {0}", pegawai.NomorKTP);
+            Console.WriteLine("Penjualan Kotor adalah {0:C}", pegawai.PenjualanKotor);
+            Console.WriteLine("Tingkat Komisi adalah {0:F2}", pegawai.TingkatKomisi);
+            Console.WriteLine("Gaji Pokoknya adalah {0:C}", pegawai.GajiPokok);
+            Console.WriteLine("Penghasilan adalah {0:C}", pegawai.Penghasilan());
+
+            pegawai.PenjualanKotor = 5000.00M;
+            pegawai.TingkatKomisi = .04M;
+            pegawai.GajiPokok = 1000.00M;
+            Console.WriteLine("\n{0}:\n\n{1}", "Informasi pegawai yang terbaru diperoleh dari ToString", pegawai);
+            Console.WriteLine("Penghasilan : {0:C}", pegawai.Penghasilan());
+            Console.ReadLine();
+        }
+    }
+}
