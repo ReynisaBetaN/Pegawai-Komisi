@@ -1,0 +1,169 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Program_3
+{
+    class Program
+    {
+        public interface IPayable
+        {
+            decimal PengambilanBanyaknyaPembayaran();
+        }
+        public class Tagihan : IPayable
+        {
+            private string nomorBagian;
+            private string deskripsiBagian;
+            private int kuantitas;
+            private decimal hargaPerbarang;
+
+            public Tagihan(string nomorbagian, string deskripsibagian, int kuantitaS, decimal hargaperbarang)
+            {
+                NomorBagian = nomorbagian;
+                DeskripsiBagian = deskripsibagian;
+                Kuantitas = kuantitaS;
+                HargaPerBarang = hargaperbarang;
+            }
+            public string NomorBagian
+            {
+                get
+                {
+                    return nomorBagian;
+                }
+                set
+                {
+                    nomorBagian = value;
+                }
+            }
+            public string DeskripsiBagian
+            {
+                get
+                {
+                    return deskripsiBagian;
+                }
+                set
+                {
+                    deskripsiBagian = value;
+                }
+            }
+            public int Kuantitas
+            {
+                get
+                {
+                    return kuantitas;
+                }
+                set
+                {
+                    kuantitas = (value < 0) ? 0 : value;
+                }
+            }
+            public decimal HargaPerBarang
+            {
+                get
+                {
+                    return hargaPerbarang;
+                }
+                set
+                {
+                    hargaPerbarang = (value < 0) ? 0 : value;
+                }
+            }
+            public override string ToString()
+            {
+                return string.Format("{0}: \n{1}: {2} ({3}) \n{4}: {5} \n{6}: {7:C}", "Tagihan", "Nomor Bagian", NomorBagian, DeskripsiBagian, "Kuantitas", Kuantitas, "Harga Per Barang", HargaPerBarang);
+            }
+            public decimal PengambilanBanyaknyaPembayaran()
+            {
+                return Kuantitas * HargaPerBarang;
+            }
+        }
+        public abstract class Pegawai : IPayable
+        {
+            private string namaDepan;
+            private string namaAkhir;
+            private string nomorKTP;
+            public Pegawai(string namadepan, string namaakhir, string nomorktp)
+            {
+                namaDepan = namadepan;
+                namaAkhir = namaakhir;
+                nomorKTP = nomorktp;
+            }
+            public string NamaDepan
+            {
+                get
+                {
+                    return namaDepan;
+                }
+            }
+            public string NamaAkhir
+            {
+                get
+                {
+                    return namaAkhir;
+                }
+            }
+            public string NomorKTP
+            {
+                get
+                {
+                    return nomorKTP;
+                }
+            }
+            public override string ToString()
+            {
+                return string.Format("{0} {1}\nNomor KTP : {2}", NamaDepan, NamaAkhir, NomorKTP);
+            }
+            public abstract decimal PengambilanBanyaknyaPembayaran();
+        }
+        public class PegawaiTergaji : Pegawai
+        {
+            private decimal gajiMingguan;
+
+            public PegawaiTergaji(string namadepan, string namaakhir, string nomorktp, decimal gaji)
+                : base(namadepan, namaakhir, nomorktp)
+            {
+                GajiMingguan = gaji;
+            }
+            public decimal GajiMingguan
+            {
+                get
+                {
+                    return gajiMingguan;
+                }
+                set
+                {
+                    gajiMingguan = ((value >= 0) ? value : 0);
+                }
+            }
+            public override decimal PengambilanBanyaknyaPembayaran()
+            {
+                return GajiMingguan;
+            }
+            public override string ToString()
+            {
+                return string.Format("Pegawai Tergaji : {0}\n{1}: {2:C}", base.ToString(), "Gaji Mingguan", GajiMingguan);
+            }
+        }
+        public class PayableInterfaceTest
+        {
+            static void Main(string[] args)
+            {
+                IPayable[] objekuntukterbayar = new IPayable[4];
+
+                objekuntukterbayar[0] = new Tagihan("01234", "seat", 2, 375.00M);
+                objekuntukterbayar[1] = new Tagihan("56789", "tire", 4, 79.95M);
+                objekuntukterbayar[2] = new PegawaiTergaji("John", "Smith", "111-11-1111", 800.00M);
+                objekuntukterbayar[3] = new PegawaiTergaji("Lisa", "Barnes", "888-88-8888", 1200.00M);
+
+                Console.WriteLine("Tagihan dan Pegawai akan diproses secara polimorfisme");
+                Console.WriteLine();
+                foreach (IPayable terbayarsaatini in objekuntukterbayar)
+                {
+                    Console.WriteLine("{0} \n{1}: {2:C}\n", terbayarsaatini, "Tanggal Jatuh Tempo", terbayarsaatini.PengambilanBanyaknyaPembayaran());
+                }
+                Console.ReadLine();
+            }
+        }
+    }
+}
